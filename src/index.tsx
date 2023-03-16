@@ -5,6 +5,7 @@ import App from './features/app/App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './providers/AuthProvider';
 import { BrowserRouter as Router } from "react-router-dom";
+import DialogProvider from './providers/dialog_provider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,9 +13,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Router>
+    <DialogProvider>
       <AuthProvider>
-        <App />
+          <App />
       </AuthProvider>
+      </DialogProvider>
     </Router>
   </React.StrictMode>
 );

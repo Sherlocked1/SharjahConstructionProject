@@ -1,27 +1,66 @@
-import { FormEventHandler, useRef } from "react";
+import React, { useContext } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { DialogContext } from "../../../contexts/dialog_context";
 import { auth } from "../../../firebase";
+import MyDialog from "../../core/custom/dialog";
+import LoadingIndicator from "../../core/custom/loading_indicator";
+import MyButton from "../../core/custom/my_button";
+import MyTextField from "../../core/custom/my_textfield";
+import TextButton from "../../core/custom/text_button";
 
 const Login = () => {
 
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const { isOpen, openDialog, closeDialog } = useContext(DialogContext);
+
+    const [email,setEmail] = useState<string>("");
+    const [password,setPassword] = useState<string>("");
+
+    const [isLoading,setIsLoading] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const signInClicked = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('signing in')
+
+        setIsLoading(true);
 
         try {
-            await auth.signInWithEmailAndPassword(
-                emailRef.current!.value,
-                passwordRef.current!.value
+            let isLoggedIn = await auth.signInWithEmailAndPassword(
+                email,
+                password
             );
-        } catch (error) {
-            console.error(error);
+
+            if (isLoggedIn.user) {
+                navigate('/');
+            }
+        } catch (error:any) {
+            setIsLoading(false)
+            openDialog("خطأ",<h1>{error}</h1>)
+            // console.error(error);
         }
+    }
+
+    const registerClicked = () => {
+        navigate('/register');
+    }
+
+    const openDialogClicked = () => {
+        openDialog("title",<h1>hi</h1>);
     }
 
     return (
         <div className="m-auto">
+
+            {
+                isLoading &&
+                <LoadingIndicator/>
+            }
+
+            {
+                isOpen &&
+                <MyDialog title={"مرحبا"} isOpen={isOpen} onClose={closeDialog} onClick={closeDialog} children={<h1>خطأ</h1>}/>
+            }
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
                 <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
                     <h1 className="text-2xl font-semibold text-center text-purple-700">
@@ -34,12 +73,10 @@ const Login = () => {
                             >
                                 البريد الالكتروني
                             </label>
-                            <input
-                                title="Email"
+                            <MyTextField
                                 placeholder="البريد الالكتروني"
-                                type="email"
-                                ref={emailRef}
-                                className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                type='email'
+                                onchange={setEmail}
                             />
                         </div>
                         <div className="mb-2">
@@ -48,36 +85,21 @@ const Login = () => {
                             >
                                 كلمة المرور
                             </label>
-                            <input
-                                title="Password"
+                            <MyTextField
                                 placeholder="كلمة المرور"
-                                ref={passwordRef}
-                                type="password"
-                                className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                type='password'
+                                onchange={setPassword}
                             />
                         </div>
-                        <a
-                            href="#"
-                            className="text-xs text-purple-600 hover:underline"
-                        >
-                            هل نسيت كلمة المرور ؟
-                        </a>
+                        <TextButton className="text-sm"> هل نسيت كلمة المرور ؟ </TextButton>
                         <div className="mt-6">
-                            <button type="submit" className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
-                                تسجيل الدخول
-                            </button>
+                            <MyButton title="تسجيل الدخول" type="submit"/>
                         </div>
                     </form>
 
                     <p className="mt-8 text-xs font-light text-center text-gray-700">
-                        {" "}
-                        ليس لديك حساب ؟{" "}
-                        <a
-                            href="#"
-                            className="font-medium text-purple-600 hover:underline"
-                        >
-                            تسجيل
-                        </a>
+                        <span> ليس لديك حساب ؟ </span>
+                        <TextButton onClick={registerClicked}>تسجيل</TextButton>
                     </p>
                 </div>
             </div>

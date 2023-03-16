@@ -4,10 +4,10 @@ import Sidebar from '../home/home';
 import Login from '../auth/login/login';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Register from '../auth/register/register';
+import { auth } from '../../firebase';
+import Logout from '../auth/logout/logout';
 
 function App() {
-
-  const [currentTab, setCurrentTab] = useState<number>(0);
 
   const isLoggedIn: boolean = false
 
@@ -16,7 +16,8 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/*' element={<Sidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />}/>
+        <Route path='/signout' element={<Logout/>}/>
+        <Route path='/*' element={<Sidebar/>} />
       </Routes>
     </div>
   );

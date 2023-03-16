@@ -3,7 +3,7 @@ export type UserData = {
     completedRequests:Request[]
 }
 
-export type request = {
+export type Request = {
     title : string,
-    date : Date
+    date : string
 }
