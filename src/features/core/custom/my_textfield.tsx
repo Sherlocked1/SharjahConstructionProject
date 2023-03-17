@@ -1,7 +1,7 @@
 import React, { HTMLInputTypeAttribute, LegacyRef } from 'react'
 
 export interface MyTextFieldProps {
-    placeholder: string,
+    placeholder?: string,
     onchange?: ((text: string) => void),
     ref?: LegacyRef<HTMLInputElement>,
     type?: HTMLInputTypeAttribute

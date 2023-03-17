@@ -1,21 +1,13 @@
-import React, { useContext } from "react";
-import { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
-import { DialogContext } from "../../../contexts/dialog/dialog_context";
-import MyDialog from "../../core/custom/dialog";
-import LoadingIndicator from "../../core/custom/loading_indicator";
 import MyButton from "../../core/custom/my_button";
 import MyTextField from "../../core/custom/my_textfield";
 import TextButton from "../../core/custom/text_button";
 
 const Login = () => {
 
-    const { isOpen, openDialog, closeDialog } = useContext(DialogContext);
-
-    const [email,setEmail] = useState<string>("");
-    const [password,setPassword] = useState<string>("");
-
-    const [isLoading,setIsLoading] = useState<boolean>(false);
+    // const [email,setEmail] = useState<string>("");
+    // const [password,setPassword] = useState<string>("");
 
     const navigate = useNavigate();
 
@@ -31,16 +23,6 @@ const Login = () => {
 
     return (
         <div className="m-auto">
-
-            {
-                isLoading &&
-                <LoadingIndicator/>
-            }
-
-            {
-                isOpen &&
-                <MyDialog/>
-            }
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
                 <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
                     <h1 className="text-2xl font-semibold text-center text-purple-700">
@@ -56,7 +38,7 @@ const Login = () => {
                             <MyTextField
                                 placeholder="البريد الالكتروني"
                                 type='email'
-                                onchange={setEmail}
+                                // onchange={setEmail}
                             />
                         </div>
                         <div className="mb-2">
@@ -68,7 +50,7 @@ const Login = () => {
                             <MyTextField
                                 placeholder="كلمة المرور"
                                 type='password'
-                                onchange={setPassword}
+                                // onchange={setPassword}
                             />
                         </div>
                         <TextButton className="text-sm"> هل نسيت كلمة المرور ؟ </TextButton>

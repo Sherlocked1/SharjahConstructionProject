@@ -1,13 +1,11 @@
 import './App.css';
 import Home from '../home/home';
 import Login from '../auth/login/login';
-import { BrowserRouter, Route, Router, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Register from '../auth/register/register';
+import Checkout from '../sub_routes/requests/payment/checkout/checkout';
 
 function App() {
-
-  const isLoggedIn: boolean = false
-
   return (
     <div className='app'>
       <BrowserRouter>
@@ -15,6 +13,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/*' element={<Home />} />
+          <Route path='/payment/:title/:description/:location' element={<Checkout/>}/>
         </Routes>
         </BrowserRouter>
     </div>
