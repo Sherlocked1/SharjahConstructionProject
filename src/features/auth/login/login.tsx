@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { DialogContext } from "../../../contexts/dialog_context";
-import { auth } from "../../../firebase";
+import { DialogContext } from "../../../contexts/dialog/dialog_context";
 import MyDialog from "../../core/custom/dialog";
 import LoadingIndicator from "../../core/custom/loading_indicator";
 import MyButton from "../../core/custom/my_button";
@@ -23,30 +22,11 @@ const Login = () => {
     const signInClicked = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setIsLoading(true);
-
-        try {
-            let isLoggedIn = await auth.signInWithEmailAndPassword(
-                email,
-                password
-            );
-
-            if (isLoggedIn.user) {
-                navigate('/');
-            }
-        } catch (error:any) {
-            setIsLoading(false)
-            openDialog("خطأ",<h1>{error}</h1>)
-            // console.error(error);
-        }
+        navigate('/');
     }
 
     const registerClicked = () => {
         navigate('/register');
-    }
-
-    const openDialogClicked = () => {
-        openDialog("title",<h1>hi</h1>);
     }
 
     return (
@@ -59,7 +39,7 @@ const Login = () => {
 
             {
                 isOpen &&
-                <MyDialog title={"مرحبا"} isOpen={isOpen} onClose={closeDialog} onClick={closeDialog} children={<h1>خطأ</h1>}/>
+                <MyDialog/>
             }
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
                 <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">

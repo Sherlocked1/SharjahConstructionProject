@@ -1,25 +1,22 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './features/app/App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './providers/AuthProvider';
-import { BrowserRouter as Router } from "react-router-dom";
-import DialogProvider from './providers/dialog_provider';
+import DialogProvider from './contexts/dialog/dialog_provider';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <Router>
-    <DialogProvider>
-      <AuthProvider>
-          <App />
-      </AuthProvider>
+  // <SocketContextComponent>
+    <Provider store={store}>
+      <DialogProvider>
+        <App />
       </DialogProvider>
-    </Router>
-  </React.StrictMode>
+    </Provider>
+  // </SocketContextComponent>
 );
 
 // If you want to start measuring performance in your app, pass a function

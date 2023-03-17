@@ -1,82 +1,63 @@
-import { useState } from 'react';
-import { IconType } from 'react-icons';
-import { MdHome, MdRequestPage, MdInbox, MdLogout } from 'react-icons/md';
+import { useEffect, useReducer } from 'react';
+import { MdHome, MdRequestPage, MdInbox } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router';
-import { Link } from 'react-router-dom';
-import { auth } from '../../firebase';
+import { defaultSocketContextState, SocketReducer } from '../../contexts/socket/context';
+import socket from '../../hooks/socket';
+import { useSocket } from '../../hooks/useSocket';
+import { RequestsActions } from '../../redux/slices/requests';
+import SideBar, { TabModel } from '../core/hoc/sidebar';
+import { ConstructionRequest } from '../core/models/constructionRequestion';
+import NotFound from '../not_found_page/not_found';
 import Dashboard from '../sub_routes/dashboard/dashboard';
 import Inbox from '../sub_routes/inbox/inbox';
-import Requests from '../sub_routes/requests/requests';
+import NewRequest from '../sub_routes/requests/new_request/new_request';
+import UpdateRequest from '../sub_routes/requests/update_request/update_request';
+import UserRequests from '../sub_routes/requests/user_requests/user_requests';
 
-type SideBarProps = {
-}
+const tabs: TabModel[] = [
+    { title: "الرئيسية", icon: MdHome, index: 0, route: '/' },
+    { title: "الطلبات", icon: MdRequestPage, index: 1, route: 'requests' },
+    { title: "بريد الوارد", icon: MdInbox, index: 2, route: 'inbox' },
+]
 
-type tab = {
-    index: number,
-    title: string,
-    icon: IconType,
-    route: string
-}
+export default function Home() {
 
-export default function Sidebar() {
+    const dispatch = useDispatch();
+    const soc = socket;
 
-    const [currentTab, setCurrentTab] = useState<number>(0);
 
-    const tabs: tab[] = [
-        { title: "الرئيسية", icon: MdHome, index: 0, route: 'dashboard' },
-        { title: "الطلبات", icon: MdRequestPage, index: 1, route: 'requests' },
-        { title: "بريد الوارد", icon: MdInbox, index: 2, route: 'inbox' },
-        // { title: "تسجيل الخروج", icon: MdLogout, index: 3, route: 'signout' },
-    ]
+    useEffect(() => {
+        soc.on('requestsFetched', ((requests: ConstructionRequest[]) => {
+            console.log('reqs',requests);
+            dispatch(RequestsActions.loadRequests(requests));
+        }));
 
-    const logout = () => {
-        auth.signOut();
-    }
+        socket.on('requestAdded', ((request: any) => {
+            dispatch(RequestsActions.addRequest(request));
+        }));
+
+        socket.on('requestDeleted',(id:string)=>{
+            dispatch(RequestsActions.removeRequest(id));
+        })
+
+        socket.on('requestUpdated',(newRequest)=>{
+            dispatch(RequestsActions.updateRequest(newRequest));
+        })
+    }, [])
 
     return (
-        <div className="flex">
-            <div className="flex flex-col h-screen p-3 bg-white shadow w-16 sm:w-60">
-                <div className="space-y-3">
-                    <h2 className=" text-sm sm:text-xl font-bold">حكومة الشارقة</h2>
-                    <ul className="pt-2 pb-4 space-y-1 text-sm">
-                        {tabs.map((tab, index) => {
-
-                            // Tab item
-
-                            return <li key={tab.index} onClick={() => { setCurrentTab(index) }} className={`rounded-md ${currentTab === tab.index ? "bg-blue-500" : ""}`}>
-                                <Link
-                                    to={tab.route}
-                                    className="flex items-center p-2 space-x-3 rounded-md"
-                                >
-                                    {<tab.icon size={25} color={currentTab === tab.index ? 'white' : 'black'} />}
-                                    <span className={`hidden sm:block ${currentTab === tab.index ? 'text-white' : 'text-black'}`}>
-                                        {tab.title}
-                                    </span>
-                                </Link>
-                            </li>
-
-                        })}
-                        <li key={tabs.length + 1} onClick={logout} className='rounded-md hover:cursor-pointer'>
-                            <div
-                                className="flex items-center p-2 space-x-3 rounded-md"
-                            >
-                                <MdLogout size={25} color='black'/>
-                                <span className={'hidden sm:block text-black'}>
-                                    تسجيل الخروج
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div className='p-4'>
+        <SideBar tabs={tabs}>
+            <div className='p-4 w-full'>
                 <Routes>
-                    <Route path='/*' element={<Dashboard />} />
+                    <Route path='/' element={<Dashboard />} />
                     <Route path='/inbox' element={<Inbox />} />
-                    <Route path='/requests' element={<Requests />} />
-                    {/* <Route path='/dashboard' element={<Dashboard/>}/> */}
+                    <Route path='/requests' element={<UserRequests />} />
+                    <Route path='/new' element={<NewRequest />} />
+                    <Route path='/update/:id' element={<UpdateRequest />} />
+                    <Route path='*' element={<NotFound />} />
                 </Routes>
             </div>
-        </div>
+        </SideBar>
     );
 }

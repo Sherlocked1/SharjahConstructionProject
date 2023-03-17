@@ -1,31 +1,25 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { Children, ReactNode, useContext, useState } from 'react';
+import { DialogContext } from '../../../contexts/dialog/dialog_context';
 import MyButton from './my_button';
 
-interface DialogProps {
-  title: string;
-  isOpen: boolean;
-  onClose: () => void;
-  onClick: () => void;
-  children: ReactNode
-}
+const MyDialog = () => {
 
-const MyDialog: React.FC<DialogProps> = ({ title, isOpen, onClose, children ,onClick}) => {
-  const handleClose = () => { onClose(); };
-  const handleClick = () => { onClick(); }
+  const {isOpen,closeDialog,openDialog,title,body} = useContext(DialogContext);
+
+  const handleClose = () => { closeDialog(); };
 
   return (
-    <Dialog maxWidth="xs" fullWidth onClose={handleClose} open={isOpen}>
-      <DialogTitle className='text-center' style={{ color: 'green' }}>
-        {title}
-      </DialogTitle>
-      <DialogContent>
-        {children}
-      </DialogContent>
-      <DialogActions disableSpacing={true}>
-        <MyButton onClick={handleClick} title='حسنا'/>
-      </DialogActions>
-    </Dialog>
+    <>
+    <div className='absolute flex inset-0 backdrop-blur-lg bg-white opacity-80 z-20 text-center justify-center items-center'/>
+    <div className='absolute flex inset-0 z-30 justify-center items-center'>
+      <div className='flex flex-col gap-8 justify-start relative shadow-md bg-white w-1/4 p-6 rounded-md'>
+        <p className='font-bold text-2xl'>{title}</p>
+        {body}
+        <MyButton color='green' title='حسنا' onClick={closeDialog}/>
+      </div>
+    </div>
+    </>
   );
 };
 

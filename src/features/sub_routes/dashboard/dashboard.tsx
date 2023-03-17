@@ -1,36 +1,23 @@
-import { auth } from "../../../firebase";
 import Card from "./custom/card";
-import { UserData } from "./models";
 import { Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { ConstructionRequest } from "../../core/models/constructionRequestion";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 export default function Dashboard() {
-
-    const data: UserData = {
-        requests: [
-            { title: "title1", date: Date() },
-            { title: "title2", date: Date() },
-            { title: "title3", date: Date() },
-            { title: "title1", date: Date() },
-            { title: "title2", date: Date() },
-            { title: "title1", date: Date() },
-            { title: "title2", date: Date() },
-            { title: "title1", date: Date() },
-            { title: "title2", date: Date() },
-        ],
-        completedRequests: [
-            { title: "", date: Date() },
-        ]
-    }
+    
+    const requests: ConstructionRequest[] = useSelector<RootState, ConstructionRequest[]>((state) => state.requests.constructionRequests);
+    
+    console.info('requests ::: ',requests);
 
     var pieData = [
-        { name: "requests", value: data.requests.length },
-        { name: "completed requests", value: data.completedRequests.length }
+        { name: "الطلبات غير المكتملة", value: requests.filter((req)=>req.status === 'Completed').length },
+        { name: "الطلبات المكتملة", value: requests.filter((req)=>req.status!=='Completed').length }
     ]
-
 
     return <div className="flex flex-col gap-10">
         <h1 className="text-2xl font-bold">
-            مرحبا {auth.currentUser?.email}
+            مرحبا
         </h1>
         <div className="flex flex-row flex-wrap gap-14">
             <div className="flex flex-col gap-4 text-lg">
@@ -38,8 +25,8 @@ export default function Dashboard() {
 
                 {/* cards */}
                 <div className="sm:columns-2 columns-auto">
-                    <Card title='عدد الطلبات' subtitle={data.requests.length.toString()} />
-                    <Card title='عدد الطلبات المكتملة' subtitle={data.completedRequests.length.toString()} />
+                    <Card title='عدد الطلبات' subtitle={requests.length.toString()} />
+                    <Card title='عدد الطلبات المكتملة' subtitle={requests.filter((req)=>req.status === 'Completed').length.toString()} />
                 </div>
 
                 {/* Summary */}
@@ -59,24 +46,6 @@ export default function Dashboard() {
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
-            </div>
-            <div className="basis-auto">
-                <table className="table-auto text-left text-sm font-light">
-                    <thead className="border-b font-medium dark:border-neutral-500">
-                        <tr>
-                            <th className="px-6 py-4">العنوان</th>
-                            <th className="px-6 py-4">التاريخ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.requests.map((req) => {
-                            return <tr className="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
-                                <td className="px-6 py-4 font-medium">{req.title}</td>
-                                <td className="px-6 py-4 font-medium">{req.date}</td>
-                            </tr>
-                        })}
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

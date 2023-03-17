@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
-import { DialogContextType } from '../contexts/dialog_context';
-import { DialogContext } from '../contexts/dialog_context';
+import { DialogContextType } from './dialog_context';
+import { DialogContext } from './dialog_context';
 
 export interface DialogProviderProps {
     children:ReactNode
@@ -24,6 +24,8 @@ const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
   };
 
   const value: DialogContextType = {
+    title,
+    body:content,
     isOpen,
     openDialog,
     closeDialog,
