@@ -3,11 +3,12 @@ import LoadingIndicator from '../../../core/custom/loading_indicator';
 import MyButton from '../../../core/custom/my_button';
 import MyTextField from '../../../core/custom/my_textfield'
 import useUpdateRequestsController from './controller';
+import ErrorLabel from '../../../core/custom/error_label';
 
 
 const UpdateRequest = () => {
 
-  const {isLoading,onUpdate,setTitle,setDescription,setLocation,onDropDownChange,title,description,location,statusValues,status} = useUpdateRequestsController();
+  const {isLoading,onUpdate,setTitle,setDescription,setLocation,onDropDownChange,title,description,location,statusValues,status,errors} = useUpdateRequestsController();
 
   return (
     <div className='flex w-full h-full items-center justify-center'>
@@ -16,14 +17,17 @@ const UpdateRequest = () => {
         <div className="mb-2">
           <label className="block text-sm font-semibold text-gray-800">الاسم</label>
           <MyTextField value={title} placeholder="" type='text' onchange={setTitle} />
+          <ErrorLabel text={errors.title ?? ""}/>
         </div>
         <div className="mb-2">
           <label className="block text-sm font-semibold text-gray-800">وصف</label>
           <MyTextField value={description} placeholder="" type='text' onchange={setDescription} />
+          <ErrorLabel text={errors.description ?? ""}/>
         </div>
         <div className="mb-2">
           <label className="block text-sm font-semibold text-gray-800">العنوان</label>
           <MyTextField value={location} placeholder="" type='text' onchange={setLocation} />
+          <ErrorLabel text={errors.location ?? ""}/>
         </div>
         <div className="mb-2">
           <label className="block text-sm font-semibold text-gray-800">الحالة</label>

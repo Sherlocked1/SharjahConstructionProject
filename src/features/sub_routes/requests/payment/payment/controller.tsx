@@ -43,9 +43,8 @@ const usePaymentController = () => {
       card: cardElement,
     });
 
-    setIsLoading(false);
-
     if (error) {
+      setIsLoading(false);
       setErrorMessage(error.message!)
     } else {
       setPaymentMethod(cardPaymentMethod)
@@ -71,6 +70,8 @@ const usePaymentController = () => {
   }
 
   socket.on('paymentSuccess', () => {
+    console.log("payment success called")
+    setIsLoading(false);
     openDialog('نجاح', <p>تمت عملية الدفع بنجاح</p>)
   })
 

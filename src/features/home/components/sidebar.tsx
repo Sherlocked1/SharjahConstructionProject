@@ -31,7 +31,7 @@ const SideBar = ({ children, tabs }: SideBarProps) => {
         <div className='flex flex-row'>
             <div className="flex flex-col min-h-screen h-full p-3 bg-white shadow w-16 sm:w-60">
                 <div className="space-y-3">
-                    <h2 className=" text-sm sm:text-xl font-bold">حكومة الشارقة</h2>
+                    <h2 className=" text-sm sm:text-xl font-bold">الشارقة</h2>
                     <ul className="pt-2 pb-4 space-y-1 text-sm">
                         {tabs.map((tab, index) => {
                             // Tab item

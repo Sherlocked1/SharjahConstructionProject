@@ -1,5 +1,6 @@
 import { CardElement } from '@stripe/react-stripe-js';
 import MyDialog from '../../../../core/custom/dialog';
+import ErrorLabel from '../../../../core/custom/error_label';
 import LoadingIndicator from '../../../../core/custom/loading_indicator';
 import MyButton from '../../../../core/custom/my_button';
 import usePaymentController from './controller';
@@ -51,7 +52,7 @@ const PaymentForm = () => {
     <form onSubmit={handleSubmit} className="border-gray-50 border w-2/4 shadow-lg rounded-lg overflow-hidden">
       <div className="px-4 py-2 shadow-lg">
         <CardElement className="p-2 bg-white rounded-md shadow-sm" />
-        <label className='text-sm text-red-500 font-semibold'>{errorMessage}</label>
+        <ErrorLabel text={errorMessage}/>
       </div>
       <MyButton type='submit' title="دفع" />
     </form>

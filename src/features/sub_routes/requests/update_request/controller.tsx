@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import socket from "../../../../hooks/socket";
 import { RootState } from "../../../../redux/store";
 import { ConstructionRequest, statusType } from "../../../core/models/constructionRequestion";
+import { FormFields } from "../../../core/models/formFields";
 
 const useUpdateRequestsController = () => {
     const statusValues:statusType[] = ['Processing','Completed','Pending'];
@@ -19,15 +20,42 @@ const useUpdateRequestsController = () => {
   const [location, setLocation] = useState<string>(requests[0].location);
   const [status,setStatus] = useState<statusType>(requests[0].status);
 
+  const [errors, setErrors] = useState<Partial<FormFields>>({});
+
   const navigate = useNavigate();
+
+  const validate = (): Partial<FormFields> => {
+    const validationErrors: Partial<FormFields> = {};
+
+    if (!title) {
+      validationErrors.title = 'لايمكن ترك الاسم فارغا';
+    }
+
+    if (!description) {
+      validationErrors.description = 'لايمكن ترك الوصف فارغا';
+    }
+
+    if (!location) {
+      validationErrors.location = 'لايمكن ترك العنوان فارغا';
+    }
+
+    return validationErrors;
+  };
 
 
   const onUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    const request:ConstructionRequest = {title,description,location,status:status,_id:id}
-    console.info('updating ',request)
-    socket.emit('updateRequest',request,updateCallBack)
+    
+    const validationErrors = validate();
+
+    if (Object.keys(validationErrors).length === 0) {
+      setIsLoading(true);
+      const request: ConstructionRequest = { title, description, location, status: status, _id: id }
+      console.info('updating ', request)
+      socket.emit('updateRequest', request, updateCallBack)
+    }else{
+      setErrors(validationErrors);
+    }
   }
 
   const updateCallBack = () => {
@@ -41,7 +69,7 @@ const useUpdateRequestsController = () => {
     setStatus(value as statusType);
   }
 
-  return {isLoading,onUpdate,setTitle,setDescription,setLocation,onDropDownChange,title,description,location,statusValues,status}
+  return {isLoading,onUpdate,setTitle,setDescription,setLocation,onDropDownChange,title,description,location,statusValues,status,errors}
 }
 
 export default useUpdateRequestsController;

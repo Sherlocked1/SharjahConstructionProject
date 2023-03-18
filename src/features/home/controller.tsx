@@ -21,6 +21,7 @@ const useHomeController = () => {
         }));
 
         socket.on('requestAdded', ((request: any) => {
+            console.log("request added called with ",request)
             dispatch(RequestsActions.addRequest(request));
         }));
 
