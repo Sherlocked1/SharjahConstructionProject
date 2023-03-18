@@ -6,7 +6,17 @@ import usePaymentController from './controller';
 
 const PaymentForm = () => {
 
-  const { paymentMethod, handleSubmit, errorMessage, title, location, isLoading, showReceipt, isOpen, showReceiptView, handleReset } = usePaymentController()
+  const {
+    title, location,
+    isOpen,
+    paymentMethod,
+    isLoading,
+    showReceiptView,
+    errorMessage,
+    showReceipt,
+    handleSubmit,
+    handleReset
+  } = usePaymentController()
 
   const receipt = (
     <div className="bg-white p-10 rounded-lg shadow-lg">

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router';
-import SideBar from '../core/hoc/sidebar';
+import SideBar from './components/sidebar';
 import NotFound from '../not_found_page/not_found';
 import Dashboard from '../sub_routes/dashboard/dashboard';
 import Notifications from '../sub_routes/notifications/notifications';

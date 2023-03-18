@@ -12,9 +12,9 @@ const useUserReqeustsController = () => {
 
     const navigate = useNavigate();
 
-    const deleteRequestWithID = (id: string) => {
+    const deleteRequest = (request: ConstructionRequest) => {
         setIsLoading(true);
-        socket.emit('deleteRequest', id, onDeletedHandler);
+        socket.emit('deleteRequest', request._id, onDeletedHandler);
     }
 
     const editRequest = (request: ConstructionRequest) => {
@@ -41,7 +41,7 @@ const useUserReqeustsController = () => {
         isLoading,
         requests,
         editRequest,
-        deleteRequestWithID,
+        deleteRequest,
         setAsCompleted,
         
     }

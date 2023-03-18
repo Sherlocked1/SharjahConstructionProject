@@ -4,6 +4,11 @@ import MyButton from "../../core/custom/my_button";
 import MyTextField from "../../core/custom/my_textfield";
 import TextButton from "../../core/custom/text_button";
 
+
+// I've implemented the authentication using firebase and then removed it due to time limitation
+// But the use should be able to sign in or sign up and then we can use their id from firebase or any other source
+// to sort their requests and emit events from the backend to them only using their ids
+
 const Login = () => {
 
     // const [email,setEmail] = useState<string>("");

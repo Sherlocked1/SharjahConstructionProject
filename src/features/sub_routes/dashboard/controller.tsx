@@ -2,18 +2,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { ConstructionRequest } from "../../core/models/constructionRequestion";
 
-const RADIAN = Math.PI / 180;
-
 const useDashboardController = () => {
+
     const requests: ConstructionRequest[] = useSelector<RootState, ConstructionRequest[]>((state) => state.requests.constructionRequests);
     
     const piesColors = ["blue", "red"]
-
     var pieData = [
         { name: "المكتملة", value: requests.filter((req) => req.status === 'Completed').length },
         { name: "غير المكتملة", value: requests.filter((req) => req.status !== 'Completed').length }
     ]
 
+    const RADIAN = Math.PI / 180;
+    
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);

@@ -35,7 +35,7 @@ const SideBar = ({ children, tabs }: SideBarProps) => {
                     <ul className="pt-2 pb-4 space-y-1 text-sm">
                         {tabs.map((tab, index) => {
                             // Tab item
-                            return <li key={tab.index} onClick={() => { setCurrentTab(index) }} className={`rounded-md ${currentTab === tab.index ? "bg-blue-500" : ""}`}>
+                            return <li data-testid={`tab`} key={tab.index} onClick={() => { setCurrentTab(index) }} className={`rounded-md ${currentTab === tab.index ? "bg-blue-500" : ""}`}>
                                 <Link
                                     to={tab.route}
                                     className="flex items-center p-2 space-x-3 rounded-md"

@@ -7,7 +7,7 @@ export interface CardProps {
 
 const Card = ({title,subtitle,backgroundColor,titleColor}:CardProps) => {
   return (
-      <div className="flex flex-col justify-center items-center p-4 rounded-md shadow-md h-48" style={{backgroundColor,color:titleColor}}>
+      <div data-testid='card' className="flex flex-col justify-center items-center p-4 rounded-md shadow-md h-48" style={{backgroundColor,color:titleColor}}>
           <h1 className="text-2xl text-center font-extrabold flex-1">
               {title}
           </h1>

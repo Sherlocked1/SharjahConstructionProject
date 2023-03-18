@@ -1,10 +1,10 @@
-import Card from "./custom/card";
+import Card from "./components/card";
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import useDashboardController from "./controller";
 
 export default function Dashboard() {
 
-    const {pieData,piesColors,renderCustomizedLabel,requests} = useDashboardController();
+    const { pieData, piesColors, renderCustomizedLabel, requests } = useDashboardController();
 
     return <div className="flex flex-col gap-10">
         <h1 className="text-2xl font-bold">

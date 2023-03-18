@@ -3,7 +3,7 @@ import { MdHome, MdNotifications, MdRequestPage } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import socket from "../../hooks/socket";
 import { RequestsActions } from "../../redux/slices/requests";
-import { TabModel } from "../core/hoc/sidebar";
+import { TabModel } from "./components/sidebar";
 import { ConstructionRequest } from "../core/models/constructionRequestion";
 
 const useHomeController = () => {

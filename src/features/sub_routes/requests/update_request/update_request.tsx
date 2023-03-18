@@ -1,4 +1,4 @@
-import DropdownComponent from '../../../core/custom/dropdown';
+import DropdownComponent from './components/dropdown';
 import LoadingIndicator from '../../../core/custom/loading_indicator';
 import MyButton from '../../../core/custom/my_button';
 import MyTextField from '../../../core/custom/my_textfield'
@@ -12,7 +12,7 @@ const UpdateRequest = () => {
   return (
     <div className='flex w-full h-full items-center justify-center'>
       {isLoading && <LoadingIndicator />}
-      <form className="mt-6 shadow-md p-10 bg-white rounded-sm" onSubmit={onUpdate}>
+      <form datatest-id="update-form" className="mt-6 shadow-md p-10 bg-white rounded-sm" onSubmit={onUpdate}>
         <div className="mb-2">
           <label className="block text-sm font-semibold text-gray-800">الاسم</label>
           <MyTextField value={title} placeholder="" type='text' onchange={setTitle} />
