@@ -1,7 +1,8 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import { IconType } from 'react-icons';
 import { MdLogout } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
+import { SocketContext } from '../../../contexts/socket/socket_context';
 
 export interface TabModel {
     index: number,
@@ -20,9 +21,13 @@ const SideBar = ({ children, tabs }: SideBarProps) => {
 
     const [currentTab, setCurrentTab] = useState<number>(0);
 
+    const {closeSocket} = useContext(SocketContext);
+
     const navigate = useNavigate();
 
     const logout = () => {
+        localStorage.clear();
+        closeSocket();
         navigate('/login')
     }
 

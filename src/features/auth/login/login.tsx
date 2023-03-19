@@ -1,8 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router";
+import MyDialog from "../../core/custom/dialog";
+import ErrorLabel from "../../core/custom/error_label";
+import LoadingIndicator from "../../core/custom/loading_indicator";
 import MyButton from "../../core/custom/my_button";
 import MyTextField from "../../core/custom/my_textfield";
 import TextButton from "../../core/custom/text_button";
+import useLoginController from "./controller";
 
 
 // I've implemented the authentication using firebase and then removed it due to time limitation
@@ -11,23 +13,12 @@ import TextButton from "../../core/custom/text_button";
 
 const Login = () => {
 
-    // const [email,setEmail] = useState<string>("");
-    // const [password,setPassword] = useState<string>("");
-
-    const navigate = useNavigate();
-
-    const signInClicked = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        navigate('/');
-    }
-
-    const registerClicked = () => {
-        navigate('/register');
-    }
+    const {formData,setFormData,formErrors,signInClicked,registerClicked,isOpen,isLoading} = useLoginController();
 
     return (
         <div className="m-auto">
+            {isLoading && <LoadingIndicator/>}
+            {isOpen && <MyDialog />}
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
                 <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
                     <h1 className="text-2xl font-semibold text-center text-purple-700">
@@ -43,8 +34,10 @@ const Login = () => {
                             <MyTextField
                                 placeholder="البريد الالكتروني"
                                 type='email'
-                                // onchange={setEmail}
+                                value={formData?.email}
+                                onchange={(text)=>{setFormData({...formData,email:text})}}
                             />
+                            <ErrorLabel text={formErrors.email ?? ""}/>
                         </div>
                         <div className="mb-2">
                             <label
@@ -55,8 +48,10 @@ const Login = () => {
                             <MyTextField
                                 placeholder="كلمة المرور"
                                 type='password'
-                                // onchange={setPassword}
+                                value={formData?.password}
+                                onchange={(text)=>{setFormData({...formData,password:text})}}
                             />
+                            <ErrorLabel text={formErrors.password ?? ""}/>
                         </div>
                         <TextButton className="text-sm"> هل نسيت كلمة المرور ؟ </TextButton>
                         <div className="mt-6">

@@ -6,6 +6,7 @@ import Register from '../auth/register/register';
 import Checkout from '../sub_routes/requests/payment/checkout/checkout';
 
 function App() {
+  
   return (
     <div className='app'>
       <BrowserRouter>

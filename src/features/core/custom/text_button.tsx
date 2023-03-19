@@ -5,12 +5,12 @@ export interface TextButtonProps {
 }
 const TextButton = (props: TextButtonProps) => {
     return (
-        <text
+        <span
             onClick={props.onClick}
             className={`font-medium text-purple-600 hover:underline hover:cursor-pointer ${props.className}`}
         >
             {props.children}
-        </text>
+        </span>
     )
 }
 

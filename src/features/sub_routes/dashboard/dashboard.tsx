@@ -4,11 +4,13 @@ import useDashboardController from "./controller";
 
 export default function Dashboard() {
 
+    const name = localStorage.getItem('name');
+
     const { pieData, piesColors, renderCustomizedLabel, requests } = useDashboardController();
 
     return <div className="flex flex-col gap-10">
         <h1 className="text-2xl font-bold">
-            مرحبا
+            {`مرحبا ${name}`}
         </h1>
         <div className="flex flex-row flex-wrap gap-14 ">
             <div className="flex flex-col gap-4 text-lg">

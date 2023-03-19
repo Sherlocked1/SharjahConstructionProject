@@ -3,15 +3,17 @@ import { PaymentMethod } from "@stripe/stripe-js";
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { DialogContext } from "../../../../../contexts/dialog/dialog_context";
-import socket from "../../../../../hooks/socket";
 import { ConstructionRequest } from "../../../../core/models/constructionRequestion";
 import { PaymentInfo } from "./models";
 import CryptoJS from 'crypto-js';
+import { SocketContext } from "../../../../../contexts/socket/socket_context";
 
 const usePaymentController = () => {
 
   const stripe = useStripe();
   const elements = useElements();
+
+  const {socket} = useContext(SocketContext);
 
   const { title, description, location } = useParams();
   const { isOpen, openDialog } = useContext(DialogContext);
@@ -66,13 +68,14 @@ const usePaymentController = () => {
     const key = process.env.REACT_APP_ENCRYPTION_KEY
     const encryptedData = CryptoJS.Rabbit.encrypt(dataString, key!);
 
-    socket.emit('makePayment', encryptedData);
+    socket?.emit('makePayment', encryptedData);
   }
 
-  socket.on('paymentSuccess', () => {
+  socket?.on('paymentSuccess', () => {
     console.log("payment success called")
+    setShowReceipt(true);
     setIsLoading(false);
-    openDialog('نجاح', <p>تمت عملية الدفع بنجاح</p>)
+    // openDialog('نجاح', <p>تمت عملية الدفع بنجاح</p>)
   })
 
   const showReceiptView = () => {
@@ -80,7 +83,6 @@ const usePaymentController = () => {
   }
 
   const handleReset = () => {
-    setShowReceipt(false);
     navigate('/');
   };
 
