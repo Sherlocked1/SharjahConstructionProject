@@ -20,7 +20,6 @@ const useRegisterController = () => {
         const errors = validate();
 
         if(Object.keys(errors).length !== 0){
-            console.log('errors')
             setFormErrors(errors);
         }else{
             setIsLoading(true)

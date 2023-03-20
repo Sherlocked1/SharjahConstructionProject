@@ -39,7 +39,6 @@ const useLoginController = () => {
                 localStorage.setItem('email',data.user?.email)
 
                 if(!socket){
-                    console.log("mafi")
                     initializeSocket();
                 }
 

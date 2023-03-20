@@ -72,7 +72,6 @@ const usePaymentController = () => {
   }
 
   socket?.on('paymentSuccess', () => {
-    console.log("payment success called")
     setShowReceipt(true);
     setIsLoading(false);
     // openDialog('نجاح', <p>تمت عملية الدفع بنجاح</p>)

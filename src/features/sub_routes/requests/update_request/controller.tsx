@@ -67,7 +67,6 @@ const useUpdateRequestsController = () => {
 
 
   const onDropDownChange = (value: string) => {
-    console.log('changed status to ', value)
     setStatus(value as statusType);
   }
 

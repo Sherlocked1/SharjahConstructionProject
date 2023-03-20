@@ -18,58 +18,63 @@ const useHomeController = () => {
         { title: "الاشعارات", icon: MdNotifications, index: 2, route: 'notifications' },
     ]
 
-    const { socket , initializeSocket,closeSocket } = useContext(SocketContext);
+    const { socket, initializeSocket, closeSocket } = useContext(SocketContext);
 
     useEffect(() => {
 
         const token = localStorage.getItem('jwt');
 
-        console.log('is socket connected ',socket?.connected);
-
-        if (!token){
-            if (socket){
+        if (!token) {
+            if (socket) {
                 closeSocket();
             }
             navigate('/login');
-            return   
+            return
         }
 
-        if (!socket && token){
+        if (!socket && token) {
             initializeSocket();
+            navigate('/');
+            return
         }
 
-        socket?.on('connection',()=>{
-            console.log('is connected');
-        })
 
-        socket?.on('connect_error', (error) => {
-            if (error.message === "Authentication error"){
-                closeSocket();
-                navigate('/login');
-            }else{
-                console.error('Connection error:', error);
-            }
-        });
+        if (!socket?.hasListeners("connection")) {
 
-        socket?.on('error', (error) => {
-            console.error('Socket error:', error);
-        });
-        socket?.on('requestsFetched', ((requests: ConstructionRequest[]) => {
-            dispatch(RequestsActions.loadRequests(requests));
-        }));
+            socket?.on('connection', () => {
+                console.log('user connected');
+            })
 
-        socket?.on('requestAdded', ((request: any) => {
-            console.log("request added called with ",request)
-            dispatch(RequestsActions.addRequest(request));
-        }));
+            socket?.on('connect_error', (error) => {
+                if (error.message === "Authentication error") {
+                    closeSocket();
+                    navigate('/login');
+                } else {
+                    console.error('Connection error:', error);
+                }
+            });
 
-        socket?.on('requestDeleted',(id:string)=>{
-            dispatch(RequestsActions.removeRequest(id));
-        })
+            socket?.on('error', (error) => {
+                console.error('Socket error:', error);
+            });
+            socket?.on('requestsFetched', ((requests: ConstructionRequest[]) => {
+                dispatch(RequestsActions.loadRequests(requests));
+            }));
 
-        socket?.on('requestUpdated',(newRequest)=>{
-            dispatch(RequestsActions.updateRequest(newRequest));
-        })
+            socket?.on('requestAdded', ((request: any) => {
+                dispatch(RequestsActions.addRequest(request));
+            }));
+
+            socket?.on('requestDeleted', (id: string) => {
+                dispatch(RequestsActions.removeRequest(id));
+            })
+
+            socket?.on('requestUpdated', (newRequest) => {
+                dispatch(RequestsActions.updateRequest(newRequest));
+            })
+        }
+
+
     })
 
     return {

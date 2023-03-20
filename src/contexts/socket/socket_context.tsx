@@ -3,7 +3,7 @@ import io, { Socket } from 'socket.io-client';
 
 interface SocketContextProps {
     socket: Socket | null;
-    initializeSocket:(()=>void);
+    initializeSocket:(() => void);
     closeSocket:(()=>void);
 }
 
@@ -30,8 +30,6 @@ const SocketProvider = ({ children }: SocketProviderProps) => {
     const getNewSocket = ():Socket | null => {
         const uri = process.env.REACT_APP_SERVER_URL as string
         let token = localStorage.getItem('jwt');
-
-        console.log("connecting to ",uri," with token ",token)
 
         const newSocket = io(uri, {
             autoConnect:true,
